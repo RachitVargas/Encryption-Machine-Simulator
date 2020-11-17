@@ -8,12 +8,12 @@ fn main() {
     println!("Choose the rotors");
 
     let alphabet: [char; 26] = [
-        'A', 'B', 'C', 'D', 'E',
-        'F', 'G', 'H', 'I', 'J',
-        'K', 'L', 'M', 'N', 'O',
-        'P', 'Q', 'R', 'S', 'T',
-        'U', 'V', 'W', 'X', 'Y',
-        'Z'
+        'a', 'b', 'c', 'd', 'e',
+        'f', 'g', 'h', 'i', 'j',
+        'k', 'l', 'm', 'n', 'o',
+        'p', 'q', 'r', 's', 't',
+        'u', 'v', 'w', 'x', 'y',
+        'z'
     ];
 
     let _ciphertex: String = encryp(&*message, alphabet);
@@ -25,7 +25,7 @@ fn main() {
 fn encryp(_message: &str, _alphabet: [char; 26]) -> String {
     let message_char: Vec<char> = _message.chars().collect();
     let mut ciphertext: String = String::new();
-
+    
     let mut i = 0;
     while i != message_char.len()-1 {
         let mut count = 0;
@@ -37,9 +37,13 @@ fn encryp(_message: &str, _alphabet: [char; 26]) -> String {
             j = j + 1;
         }
 
-        count = rotor(count, message_char[i]);
-        ciphertext.push(_alphabet[count].to_string().parse().unwrap());
-
+        if message_char[i] == " ".parse().unwrap() {
+            ciphertext.push("@".parse().unwrap())
+        }else{
+            count = rotor(count, message_char[i]);
+            ciphertext.push(_alphabet[count].to_string().parse().unwrap());
+        }
+        
         i = i + 1;
     }
     return ciphertext;
@@ -60,8 +64,12 @@ fn decryp(_ciphertext: String, _alphabet: [char; 26]) -> String {
             j = j + 1;
         }
 
-        count = rotor(count, ciphertext_char[i]);
-        message.push(_alphabet[count].to_string().parse().unwrap());
+        if ciphertext_char[i] == "@".parse().unwrap() {
+            message.push(" ".parse().unwrap())
+        }else{
+            count = rotor(count, ciphertext_char[i]);
+            message.push(_alphabet[count].to_string().parse().unwrap());
+        }
 
         i = i + 1;
     }
